@@ -24,7 +24,7 @@
       "package": "com.gobaby.travel",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#000"
+        "backgroundColor": "#000000"
       },
       "edgeToEdgeEnabled": true,
       "googleServicesFile": "./google-services.json",
@@ -45,7 +45,7 @@
     },
     "web": {
       "bundler": "metro",
-      "output": "single-page",
+      "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [

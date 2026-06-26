@@ -20,30 +20,17 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install root dependencies
-        run: npm ci
+      - name: Enable Corepack (for yarn@1.22.22)
+        run: corepack enable
 
       - name: Install frontend dependencies
-        run: cd frontend && npm install
+        run: cd frontend && yarn install --frozen-lockfile
 
       - name: Setup EAS CLI
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Link project to your Expo account
-        run: |
-          cd frontend
-          node -e "
-            const fs = require('fs');
-            const app = JSON.parse(fs.readFileSync('app.json', 'utf8'));
-            if (app.expo.extra && app.expo.extra.eas) delete app.expo.extra.eas.projectId;
-            if (app.expo.updates) delete app.expo.updates;
-            fs.writeFileSync('app.json', JSON.stringify(app, null, 2));
-            console.log('Cleared stale projectId — EAS will create a fresh one.');
-          "
-          eas init --non-interactive
 
       - name: Build Android Preview APK
         run: |
