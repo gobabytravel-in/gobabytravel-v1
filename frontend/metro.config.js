@@ -18,6 +18,13 @@ if (fs.existsSync(path.resolve(workspaceRoot, 'node_modules'))) {
 
 config.resolver.nodeModulesPaths = nodeModulesPaths;
 
+// Shim Node.js built-ins that some packages (e.g. ws, used by Supabase/Firebase)
+// try to import but are not available in React Native's Metro bundler.
+config.resolver.extraNodeModules = {
+  ...config.resolver.extraNodeModules,
+  stream: path.resolve(__dirname, 'shims/stream.js'),
+};
+
 config.maxWorkers = 2;
 
 module.exports = config;
