@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "925679065476",
+    "project_id": "gobaby-travel-app-bf076",
+    "storage_bucket": "gobaby-travel-app-bf076.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925679065476:android:2f21442d93b82b788fa5d1",
+        "android_client_info": {
+          "package_name": "com.gobaby.travel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6eeVae5lW785_ZM0yELzel-lASkDrzVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
