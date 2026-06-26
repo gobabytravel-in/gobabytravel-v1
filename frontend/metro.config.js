@@ -25,6 +25,4 @@ config.resolver.extraNodeModules = {
   stream: path.resolve(__dirname, 'shims/stream.js'),
 };
 
-config.maxWorkers = 2;
-
 module.exports = config;
