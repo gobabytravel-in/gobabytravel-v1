@@ -1,0 +1,40 @@
+{
+  "cli": {
+    "version": ">= 10.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "preview": {
+      "distribution": "internal",
+      "channel": "preview",
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://jtrldgvjedvbidkiupsx.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0cmxkZ3ZqZWR2Ymlka2l1cHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NjM2MjgsImV4cCI6MjA5NzAzOTYyOH0.zkJhEE3-Wlz6U27oDV8XHnXXjGpjvggNE1uN2Arfrf0",
+        "EXPO_PUBLIC_BACKEND_URL": "https://gobabytravel.replit.app"
+      }
+    },
+    "production": {
+      "channel": "production",
+      "autoIncrement": true,
+      "android": {
+        "buildType": "app-bundle"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://jtrldgvjedvbidkiupsx.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0cmxkZ3ZqZWR2Ymlka2l1cHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NjM2MjgsImV4cCI6MjA5NzAzOTYyOH0.zkJhEE3-Wlz6U27oDV8XHnXXjGpjvggNE1uN2Arfrf0",
+        "EXPO_PUBLIC_BACKEND_URL": "https://gobabytravel.replit.app"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./play-store-key.json",
+        "track": "internal"
+      }
+    }
+  }
+}
