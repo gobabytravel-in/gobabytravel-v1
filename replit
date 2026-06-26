@@ -1,0 +1,48 @@
+modules = ["nodejs-20", "web", "python-3.12"]
+[agent]
+expertMode = true
+stack = "BEST_EFFORT_FALLBACK"
+
+[nix]
+channel = "stable-25_05"
+
+[userenv]
+
+[userenv.shared]
+EXPO_PUBLIC_SUPABASE_URL = "https://jtrldgvjedvbidkiupsx.supabase.co"
+EXPO_PUBLIC_BACKEND_URL = "https://7a096b95-b313-49f6-928a-df281cc4c237-00-wm6qj90k8r6n.pike.replit.dev"
+DB_NAME = "gobaby_travel"
+EXPO_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0cmxkZ3ZqZWR2Ymlka2l1cHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NjM2MjgsImV4cCI6MjA5NzAzOTYyOH0.zkJhEE3-Wlz6U27oDV8XHnXXjGpjvggNE1uN2Arfrf0"
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd frontend && set -a && source .env && set +a && NODE_PATH=../node_modules ../node_modules/.bin/expo export --platform web --output-dir dist && cd ../backend && PYTHONPATH=. python3 -m uvicorn server:app --host 0.0.0.0 --port 5000"
+waitForPort = 5000
+
+[[ports]]
+localPort = 5000
+externalPort = 80
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["bash", "-c", "cd backend && PYTHONPATH=. python3 -m uvicorn server:app --host 0.0.0.0 --port 5000"]
+build = ["bash", "-c", "cd frontend && NODE_PATH=../node_modules ../node_modules/.bin/expo export --platform web --output-dir dist"]
