@@ -11,13 +11,9 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   console.warn('[supabase] Missing EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY');
 }
 
-// Provide ws transport for Node SSR (Metro static export uses Node 20 which lacks native WebSocket).
-// In the browser/native runtime, the native WebSocket is used automatically.
-let realtimeTransport: any = undefined;
-if (typeof window === 'undefined') {
-  try { realtimeTransport = require('ws'); } catch { /* */ }
-}
-
+// React Native has native WebSocket — @supabase/realtime-js detects it automatically.
+// Do NOT require('ws') here; Metro bundles all code regardless of runtime conditions,
+// and ws pulls in Node.js built-ins (zlib, stream, net, tls) unavailable in Metro.
 export const supabase = createClient(SUPABASE_URL || '', SUPABASE_ANON_KEY || '', {
   auth: {
     storage: Platform.OS === 'web' ? undefined : (AsyncStorage as any),
@@ -25,5 +21,4 @@ export const supabase = createClient(SUPABASE_URL || '', SUPABASE_ANON_KEY || ''
     persistSession: true,
     detectSessionInUrl: Platform.OS === 'web',
   },
-  realtime: realtimeTransport ? { transport: realtimeTransport } : undefined,
 });
