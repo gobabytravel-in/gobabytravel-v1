@@ -2,7 +2,7 @@
   "expo": {
     "name": "GoBaby Travel",
     "slug": "gobaby-travel",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "gobaby-travel",
@@ -41,11 +41,22 @@
         "RECORD_AUDIO",
         "READ_CONTACTS"
       ],
-      "versionCode": 4
+      "versionCode": 4,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "gobaby-travel"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
+      "output": "single-page",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
