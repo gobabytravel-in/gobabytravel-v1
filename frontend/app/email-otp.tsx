@@ -8,6 +8,11 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme, Space, Radius, Font } from '../constants/Theme';
 import { useAuth } from '../contexts/AuthContext';
+import { OTP_MIN_LENGTH, OTP_MAX_LENGTH } from '../constants/auth';
+
+// No length is hardcoded here. OTP_MIN_LENGTH / OTP_MAX_LENGTH live in
+// constants/auth.ts and cover any length Supabase chooses to send.
+// verifyOtp() receives the complete typed token — Supabase decides validity.
 
 export default function EmailOtpScreen() {
   const router = useRouter();
@@ -19,6 +24,7 @@ export default function EmailOtpScreen() {
   const codeRef = useRef<TextInput>(null);
 
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const isCodeReady = code.trim().length >= OTP_MIN_LENGTH;
 
   const handleSendCode = async () => {
     if (!isValidEmail) return;
@@ -31,7 +37,7 @@ export default function EmailOtpScreen() {
   };
 
   const handleVerify = async () => {
-    if (code.trim().length < 6) return;
+    if (!isCodeReady) return;
     setBusy(true);
     const { error } = await verifyEmailOtp(email, code);
     setBusy(false);
@@ -65,7 +71,7 @@ export default function EmailOtpScreen() {
           {step === 'email' ? (
             <>
               <Text style={styles.title}>Sign in with email</Text>
-              <Text style={styles.subtitle}>We'll send you a 6-digit code to verify it's you. No password needed.</Text>
+              <Text style={styles.subtitle}>We'll send you a sign-in code. No password needed.</Text>
               <View style={styles.inputWrap}>
                 <Ionicons name="mail" size={18} color={Theme.textMuted} />
                 <TextInput
@@ -101,23 +107,23 @@ export default function EmailOtpScreen() {
                 <TextInput
                   ref={codeRef}
                   value={code}
-                  onChangeText={(t) => setCode(t.replace(/[^0-9]/g, '').slice(0, 6))}
-                  placeholder="6-digit code"
+                  onChangeText={(t) => setCode(t.replace(/[^0-9]/g, '').slice(0, OTP_MAX_LENGTH))}
+                  placeholder="Sign-in code"
                   placeholderTextColor={Theme.textSubtle}
                   keyboardType="number-pad"
                   autoComplete="one-time-code"
                   textContentType="oneTimeCode"
                   style={[styles.input, styles.inputCode]}
                   editable={!busy}
-                  maxLength={6}
+                  maxLength={OTP_MAX_LENGTH}
                   returnKeyType="done"
                   onSubmitEditing={handleVerify}
                 />
               </View>
               <Pressable
                 onPress={handleVerify}
-                disabled={code.length < 6 || busy}
-                style={({ pressed }) => [styles.primaryBtn, (code.length < 6 || busy) && { opacity: 0.5 }, pressed && { opacity: 0.85 }]}
+                disabled={!isCodeReady || busy}
+                style={({ pressed }) => [styles.primaryBtn, (!isCodeReady || busy) && { opacity: 0.5 }, pressed && { opacity: 0.85 }]}
               >
                 {busy ? <ActivityIndicator color={Theme.bg} /> : <Text style={styles.primaryBtnText}>Verify & Continue</Text>}
               </Pressable>
