@@ -12,6 +12,8 @@ import { supabase } from '../lib/supabase';
 import { trackScreenView } from '../utils/analytics';
 import { useRouter } from 'expo-router';
 
+import { OTP_MIN_LENGTH, OTP_MAX_LENGTH } from '../constants/auth';
+
 const TRAVEL_STYLES = ['Solo', 'Couple', 'Family', 'Group', 'Adventure', 'Luxury'];
 const BUDGET_PREFS = [
   { key: 'budget', label: 'Budget', icon: 'wallet-outline', color: Theme.teal },
@@ -168,20 +170,20 @@ export default function ProfileScreen() {
               </>
             ) : (
               <>
-                <Text style={styles.otpHint}>We sent a 6-digit code to {email}</Text>
+                <Text style={styles.otpHint}>We sent a sign-in code to {email}</Text>
                 <TextInput
                   style={styles.input}
                   value={otp}
-                  onChangeText={setOtp}
-                  placeholder="Enter 6-digit code"
+                  onChangeText={(t) => setOtp(t.replace(/[^0-9]/g, '').slice(0, OTP_MAX_LENGTH))}
+                  placeholder="Sign-in code"
                   placeholderTextColor={Theme.textSubtle}
                   keyboardType="number-pad"
-                  maxLength={6}
+                  maxLength={OTP_MAX_LENGTH}
                 />
                 <Pressable
                   style={({ pressed }) => [styles.emailBtn, pressed && { opacity: 0.85 }, (!otp.trim() || authLoading) && { opacity: 0.5 }]}
                   onPress={handleVerifyOtp}
-                  disabled={authLoading || !otp.trim()}
+                  disabled={authLoading || otp.trim().length < OTP_MIN_LENGTH}
                 >
                   {authLoading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.emailBtnText}>Verify Code</Text>}
                 </Pressable>
